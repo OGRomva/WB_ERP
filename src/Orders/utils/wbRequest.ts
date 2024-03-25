@@ -1,12 +1,9 @@
 import axios from 'Axios';
 import * as process from "process";
-import dayjs, {Dayjs} from "dayjs";
+import * as dayjs from "dayjs";
 
-export const getOrdersWB = async () => {
+export const getOrdersWB = async (filterDate: string = dayjs().format("YYYY-MM-DD"), tryCount: number = 0) => {
     try {
-        let tryCount: number = 0;
-        const filterDate = "2024-03-19"
-        console.log(filterDate)
         const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/orders";
         const params = {
             "dateFrom": `${filterDate}`
@@ -14,21 +11,21 @@ export const getOrdersWB = async () => {
         const headers = {
             "Authorization": `${process.env.KEY}`
         }
-        console.log(process.env.KEY)
+
         let data = undefined;
-        let flag = true
+        data = await axios.get(url, {params, headers})
+            .catch((err) => {
+                if (tryCount !== 5) {
+                    tryCount++;
+                    console.log(err?.message, "tryCount:  ", tryCount);
 
-
-        while (flag) {
-            try {
-                data = await axios.get(url, {params, headers})
-                if (data?.status === 200) flag = false;
-            } catch (err) {
-                tryCount++;
-                if (tryCount === 5) flag = false;
-                console.log(err?.message, "tryCount:  ", tryCount)
-            }
-        }
+                    setTimeout(() => {
+                        getOrdersWB(filterDate, tryCount)
+                    }, 15000);
+                } else {
+                    console.log(err?.message, "tryCount:  ", tryCount);
+                }
+        });
 
         return data?.data;
     } catch (e) {

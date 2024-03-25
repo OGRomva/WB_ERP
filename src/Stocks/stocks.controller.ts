@@ -6,16 +6,13 @@ export class StocksController {
 
     constructor(private stocksService: StocksService) {}
 
-    @Post()
+    @Post('update')
     update() {
         return this.stocksService.updateStocks()
     }
 
-    @Get()
+    @Get('get')
     get(){
         return this.stocksService.getStocks()
     }
-
-
-
 }

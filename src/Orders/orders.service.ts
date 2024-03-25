@@ -2,27 +2,32 @@ import { Injectable } from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Orders} from "./orders.model";
 import {getOrdersWB} from "./utils/wbRequest";
+import {Cron, Interval} from "@nestjs/schedule";
 
 @Injectable()
 export class OrdersService {
     constructor(@InjectModel(Orders) private ordersRepository: typeof Orders) {}
 
+    // @Cron('0 41 00 * * *')
+    @Interval(10000)
     async updateOrders() {
         try {
-            await Orders.sync();
+            await Orders.sync({alter: true});
             const ordersData = await getOrdersWB();
-            console.log(ordersData);
+
             ordersData.forEach((item, index) => {
-                Orders.build(item).save();
+                Orders.build(item).save().catch((err) => {
+                    console.error(err)
+                });
                 console.log(`Готово на: ${100 / ordersData.length * index}%`)
             })
+            console.log('orders was updated')
         } catch (e) {
-            console.error("gfdgd");
+            console.error(e);
         }
     }
 
     async getOrders() {
-        // return this.ordersRepository.findAll();
-        console.log(await getOrdersWB());
+        return this.ordersRepository.findAll();
     }
 }
