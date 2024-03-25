@@ -16,9 +16,10 @@ interface StockCreationAttrs {
     quantityFull: number;
     Price: number;
     Discount: number;
+    dateUpload:string;
 }
 
-@Table({tableName: 'stocks'})
+@Table({tableName: 'stocks', timestamps:false})
 export class Stocks extends Model<Stocks, StockCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
@@ -67,4 +68,7 @@ export class Stocks extends Model<Stocks, StockCreationAttrs> {
 
     @Column({type: DataType.INTEGER})
     Discount: number;
+
+    @Column({type: DataType.STRING})
+    dateUpload: string;
 }

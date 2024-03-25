@@ -99,7 +99,7 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.INTEGER})
     priceWithDisc: number;
 
-    @Column({type: DataType.INTEGER})
+    @Column({type: DataType.BOOLEAN})
     isCancel: boolean;
 
     @Column({type: DataType.STRING})

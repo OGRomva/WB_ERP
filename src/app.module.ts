@@ -26,6 +26,7 @@ import {Orders} from "./Orders/orders.model";
     }), StocksModule, OrdersModule]
 
 })
+
 export class AppModule {
 
 }
