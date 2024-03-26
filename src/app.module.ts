@@ -6,6 +6,7 @@ import { StocksModule } from './stocks/stocks.module';
 import {Stocks} from "./Stocks/stocks.model";
 import { OrdersModule } from './orders/orders.module';
 import {Orders} from "./Orders/orders.model";
+import { ReportDetailByPeriodModule } from './report-detail-by-period/report-detail-by-period.module';
 
 @Module({
     controllers : [],
@@ -23,7 +24,7 @@ import {Orders} from "./Orders/orders.model";
             database:  process.env.POSTGRES_DB,
             models: [Stocks, Orders],
             autoLoadModels: true
-    }), StocksModule, OrdersModule]
+    }), StocksModule, OrdersModule, ReportDetailByPeriodModule]
 
 })
 
