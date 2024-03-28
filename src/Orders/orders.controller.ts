@@ -1,6 +1,5 @@
 import {Controller, Get, Post} from '@nestjs/common';
 import {OrdersService} from "./orders.service";
-import {getOrdersWB} from "./utils/wbRequest";
 
 @Controller('orders')
 export class OrdersController {

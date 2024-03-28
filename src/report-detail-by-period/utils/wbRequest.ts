@@ -2,13 +2,14 @@ import axios from 'Axios';
 import * as process from "process";
 import * as dayjs from "dayjs";
 
-export const getFinancialReportWB = async (filterDate: string = dayjs().format("YYYY-MM-DD"), tryCount: number = 0) => {
+export const getFinancialReportWB = async (dateFrom: string, dateTo: string, tryCount: number = 0) => {
     try {
         //тут старая ссылка, новая с v3
         const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod";
         const params = {
-            "dateFrom": `${dayjs().add(-7, 'day').format("YYYY-MM-DD")}`,
-            "dateTo": `${filterDate}`,
+            // "dateFrom": `${dayjs().add(-7, 'day').format("YYYY-MM-DD")}`,
+            "dateFrom": `${dateFrom}`,
+            "dateTo": `${dateTo}`,
             "rrdid": 0
         }
         const headers = {
@@ -23,7 +24,7 @@ export const getFinancialReportWB = async (filterDate: string = dayjs().format("
                     console.log(err?.message, "tryCount:  ", tryCount);
 
                     setTimeout(() => {
-                        getFinancialReportWB(filterDate, tryCount)
+                        getFinancialReportWB(dateFrom, dateTo, tryCount)
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);

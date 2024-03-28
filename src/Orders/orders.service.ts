@@ -9,7 +9,7 @@ export class OrdersService {
     constructor(@InjectModel(Orders) private ordersRepository: typeof Orders) {}
 
     // @Cron('0 41 00 * * *')
-    @Interval(10000)
+    // @Interval(10000)
     async updateOrders() {
         try {
             await Orders.sync({alter: true});

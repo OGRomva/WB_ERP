@@ -1,4 +1,5 @@
-import {Column, DataType, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
+
 
 interface FinancialReportCreationAttrs {
     realizationreport_id:number;
@@ -66,198 +67,200 @@ interface FinancialReportCreationAttrs {
     report_type: number;
 }
 
-@Table({ tableName: 'realization_reports', timestamps: false })
+@Table({ tableName: 'financialReport', timestamps: false })
 export class FinancialReport extends Model<FinancialReport, FinancialReportCreationAttrs>{
-    @PrimaryKey
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT, unique: true, primaryKey: true, autoIncrement: true})
+    id:number;
+
+    @Column({type: DataType.BIGINT})
     realizationreport_id: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     date_from: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     date_to: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     create_dt: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     currency_name: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     rrd_id: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     gi_id: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     subject_name: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     nm_id: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     brand_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     sa_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     ts_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     barcode: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     doc_type_name: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     quantity: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     retail_price: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     retail_amount: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     sale_percent: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     commission_percent: number;
 
-    @Column(DataType.INTEGER)
-    office_name: number;
+    @Column({type: DataType.STRING})
+    office_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     supplier_oper_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     order_dt: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     sale_dt: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     rr_dt: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     shk_id: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     retail_price_withdisc_rub: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     delivery_amount: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     return_amount: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     delivery_rub: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     gi_box_type_name: string;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     product_discount_for_report: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     supplier_promo: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     rid: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_spp_prc: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_kvw_prc_base: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_kvw_prc:number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     sup_rating_prc_up: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     is_kgvp_v2: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_sales_commission:number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_for_pay: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_reward: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     acquiring_fee:number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     acquiring_bank: string;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_vw: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     ppvz_vw_nds: number;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     ppvz_office_id: number;
 
-    @Column(DataType.STRING)
-    ppvz_office_name: string;
+    // @Column({type: DataType.STRING})
+    // ppvz_office_name: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     ppvz_supplier_id: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     ppvz_supplier_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     ppvz_inn: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     decloration_number: string;
 
-    @Column(DataType.STRING)
-    bonus_type_name: string;
+    // @Column({type: DataType.STRING})
+    // bonus_type_name: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     sticker_id: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     site_country: string;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     penalty: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     additional_payment: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     rebill_logistic_cost: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     rebill_logistic_org: string;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     kiz: string;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     storage_fee: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     deduction: number;
 
-    @Column(DataType.NUMBER)
+    @Column({type: DataType.REAL})
     acceptance: number;
 
-    @Column(DataType.STRING)
+    @Column({type: DataType.STRING})
     srid: string;
 
-    @Column(DataType.INTEGER)
+    @Column({type: DataType.BIGINT})
     report_type: number;
 }

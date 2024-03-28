@@ -7,6 +7,7 @@ import {Stocks} from "./Stocks/stocks.model";
 import { OrdersModule } from './orders/orders.module';
 import {Orders} from "./Orders/orders.model";
 import { ReportDetailByPeriodModule } from './report-detail-by-period/report-detail-by-period.module';
+import {FinancialReport} from "./report-detail-by-period/financialReport.model";
 
 @Module({
     controllers : [],
@@ -22,7 +23,7 @@ import { ReportDetailByPeriodModule } from './report-detail-by-period/report-det
             username:  process.env.POSTGRES_USER,
             password:  String(process.env.POSTGRES_PASSWORD),
             database:  process.env.POSTGRES_DB,
-            models: [Stocks, Orders],
+            models: [Stocks, Orders, FinancialReport],
             autoLoadModels: true
     }), StocksModule, OrdersModule, ReportDetailByPeriodModule]
 
