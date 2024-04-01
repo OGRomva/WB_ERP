@@ -8,13 +8,10 @@ import {Cron, Interval} from "@nestjs/schedule";
 export class OrdersService {
     constructor(@InjectModel(Orders) private ordersRepository: typeof Orders) {}
 
-    // @Cron('0 41 00 * * *')
-    @Interval(10000)
     async updateOrders() {
         try {
             await Orders.sync({alter: true});
             const ordersData = await getOrdersWB();
-
             ordersData.forEach((item, index) => {
                 Orders.build(item).save().catch((err) => {
                     console.error(err)
@@ -26,8 +23,8 @@ export class OrdersService {
             console.error(e);
         }
     }
-
     async getOrders() {
         return this.ordersRepository.findAll();
     }
+
 }
