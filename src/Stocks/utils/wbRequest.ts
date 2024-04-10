@@ -23,6 +23,7 @@ export const getStocksWB = async (tryCount: number = 0) => {
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);
+                    //уведомление о провале загрузки
                 }
             });
 

@@ -1,13 +1,10 @@
 import axios from 'Axios';
 import * as process from "process";
-import * as dayjs from "dayjs";
 
 export const getFinancialReportWB = async (dateFrom: string, dateTo: string, tryCount: number = 0) => {
     try {
-        //тут старая ссылка, новая с v3
-        const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod";
+        const url: string = "https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod";
         const params = {
-            // "dateFrom": `${dayjs().add(-7, 'day').format("YYYY-MM-DD")}`,
             "dateFrom": `${dateFrom}`,
             "dateTo": `${dateTo}`,
             "rrdid": 0

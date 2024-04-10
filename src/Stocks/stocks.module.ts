@@ -8,5 +8,6 @@ import {Stocks} from "./stocks.model";
   controllers: [StocksController],
   providers: [StocksService],
   imports: [SequelizeModule.forFeature([Stocks])],
+  exports: [StocksService]
 })
 export class StocksModule {}

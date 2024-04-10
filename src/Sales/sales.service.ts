@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Sales} from "./sales.model";
 import {getSalesWB} from "./utils/wbRequest";
+import {setFilterDate} from "./utils/filter";
 
 @Injectable()
 export class SalesService {
@@ -10,7 +11,7 @@ export class SalesService {
     async updateSales() {
         try {
             await Sales.sync({alter: true});
-            const salesData = await getSalesWB();
+            const salesData = await getSalesWB(await setFilterDate(this.salesRepository));
 
             salesData.forEach((item, index) => {
                 Sales.build(item).save().catch((err) => {
@@ -23,8 +24,6 @@ export class SalesService {
             console.error(e);
         }
     }
-
-
 
     async getSales() {
         return this.salesRepository.findAll();

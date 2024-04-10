@@ -2,7 +2,7 @@ import axios from 'Axios';
 import * as process from "process";
 import * as dayjs from "dayjs";
 
-export const getSalesWB = async (filterDate: string = dayjs().format("YYYY-MM-DD"), tryCount: number = 0) => {
+export const getSalesWB = async (filterDate: string, tryCount: number = 0) => {
     try {
         const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/sales";
         const params = {
@@ -24,6 +24,7 @@ export const getSalesWB = async (filterDate: string = dayjs().format("YYYY-MM-DD
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);
+                    //уведомление о провале загрузки
                 }
         });
 
@@ -31,5 +32,4 @@ export const getSalesWB = async (filterDate: string = dayjs().format("YYYY-MM-DD
     } catch (e) {
         console.error(e);
     }
-
 }

@@ -7,6 +7,7 @@ import {FinancialReport} from "./financialReport.model";
 @Module({
   controllers: [ReportDetailByPeriodController],
   providers: [ReportDetailByPeriodService],
-  imports: [SequelizeModule.forFeature([FinancialReport])]
+  imports: [SequelizeModule.forFeature([FinancialReport])],
+  exports: [ReportDetailByPeriodService]
 })
 export class ReportDetailByPeriodModule {}
