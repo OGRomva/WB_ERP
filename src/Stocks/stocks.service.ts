@@ -2,7 +2,6 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Stocks} from "./stocks.model";
 import {getStocksWB} from './utils/wbRequest';
-import {Cron} from "@nestjs/schedule";
 import * as dayjs from "dayjs";
 
 
@@ -12,8 +11,6 @@ export class StocksService {
 
     constructor(@InjectModel(Stocks) private stocksRepository: typeof Stocks) {}
 
-    // @Cron('* * * * * *')
-    //доделать
     async updateStocks() {
         await Stocks.sync({alter: true})
         const stocksData = await getStocksWB();
@@ -22,7 +19,6 @@ export class StocksService {
             Stocks.build(item).save();
             console.log(`Готово на: ${100 / stocksData.length * index}%`)
         });
-
 
     }
 

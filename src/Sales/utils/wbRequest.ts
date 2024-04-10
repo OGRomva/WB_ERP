@@ -2,10 +2,9 @@ import axios from 'Axios';
 import * as process from "process";
 import * as dayjs from "dayjs";
 
-export const getOrdersWB = async (filterDate: string, tryCount: number = 0) => {
+export const getSalesWB = async (filterDate: string, tryCount: number = 0) => {
     try {
-        const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/orders";
-        console.log(filterDate)
+        const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/sales";
         const params = {
             "dateFrom": `${filterDate}`
         }
@@ -21,7 +20,7 @@ export const getOrdersWB = async (filterDate: string, tryCount: number = 0) => {
                     console.log(err?.message, "tryCount:  ", tryCount);
 
                     setTimeout(() => {
-                        getOrdersWB(filterDate, tryCount)
+                        getSalesWB(filterDate, tryCount)
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);
@@ -33,5 +32,4 @@ export const getOrdersWB = async (filterDate: string, tryCount: number = 0) => {
     } catch (e) {
         console.error(e);
     }
-
 }

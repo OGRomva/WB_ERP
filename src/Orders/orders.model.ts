@@ -84,19 +84,19 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.BOOLEAN})
     isRealization: boolean;
 
-    @Column({type: DataType.INTEGER})
+    @Column({type: DataType.REAL})
     totalPrice: number;
 
     @Column({type: DataType.INTEGER})
     discountPercent: number;
 
-    @Column({type: DataType.INTEGER})
+    @Column({type: DataType.REAL})
     spp: number;
 
-    @Column({type: DataType.INTEGER})
+    @Column({type: DataType.REAL})
     finishedPrice: number;
 
-    @Column({type: DataType.INTEGER})
+    @Column({type: DataType.REAL})
     priceWithDisc: number;
 
     @Column({type: DataType.BOOLEAN})

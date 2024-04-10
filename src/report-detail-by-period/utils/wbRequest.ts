@@ -1,13 +1,13 @@
 import axios from 'Axios';
 import * as process from "process";
-import * as dayjs from "dayjs";
 
-export const getOrdersWB = async (filterDate: string, tryCount: number = 0) => {
+export const getFinancialReportWB = async (dateFrom: string, dateTo: string, tryCount: number = 0) => {
     try {
-        const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/orders";
-        console.log(filterDate)
+        const url: string = "https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod";
         const params = {
-            "dateFrom": `${filterDate}`
+            "dateFrom": `${dateFrom}`,
+            "dateTo": `${dateTo}`,
+            "rrdid": 0
         }
         const headers = {
             "Authorization": `${process.env.KEY}`
@@ -21,11 +21,10 @@ export const getOrdersWB = async (filterDate: string, tryCount: number = 0) => {
                     console.log(err?.message, "tryCount:  ", tryCount);
 
                     setTimeout(() => {
-                        getOrdersWB(filterDate, tryCount)
+                        getFinancialReportWB(dateFrom, dateTo, tryCount)
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);
-                    //уведомление о провале загрузки
                 }
         });
 
