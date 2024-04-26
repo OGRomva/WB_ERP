@@ -2,21 +2,25 @@ import {Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {ConfigModule} from "@nestjs/config";
 import * as process from "process";
-import { StocksModule } from './stocks/stocks.module';
-import {Stocks} from "./Stocks/stocks.model";
-import { OrdersModule } from './orders/orders.module';
-import {Orders} from "./Orders/orders.model";
-import { ReportDetailByPeriodModule } from './report-detail-by-period/report-detail-by-period.module';
-import {FinancialReport} from "./report-detail-by-period/financialReport.model";
-import { SalesModule } from './sales/sales.module';
-import {Sales} from "./Sales/sales.model";
-import { TaskScheduleModule } from './task-schedule/task-schedule.module';
 import {ScheduleModule} from "@nestjs/schedule";
 import {TimeoutError} from "sequelize";
-import { SupplierKeyModule } from './supplier-key/supplier-key.module';
-import {SupplierKeys} from "./supplier-key/supplier-key.model";
-
-
+import {Sales} from "./modules/Sales/sales.model";
+import {SalesModule} from "./modules/Sales/sales.module";
+import {Stocks} from "./modules/Stocks/stocks.model";
+import {Orders} from "./modules/Orders/orders.model";
+import {FinancialReport} from "./modules/report-detail-by-period/financialReport.model";
+import {SupplierKeys} from "./modules/supplier-key/supplier-key.model";
+import {User} from "./modules/user/user.model";
+import {Role} from "./modules/roles/role.model";
+import {UserRoles} from "./modules/roles/user-roles.model";
+import {StocksModule} from "./modules/Stocks/stocks.module";
+import {OrdersModule} from "./modules/Orders/orders.module";
+import {ReportDetailByPeriodModule} from "./modules/report-detail-by-period/report-detail-by-period.module";
+import {TaskScheduleModule} from "./modules/task-schedule/task-schedule.module";
+import {SupplierKeyModule} from "./modules/supplier-key/supplier-key.module";
+import {AuthModule} from "./modules/auth/auth.module";
+import {UserModule} from "./modules/user/user.module";
+import {RolesModule} from "./modules/roles/roles.module";
 
 @Module({
     controllers : [],
@@ -25,6 +29,7 @@ import {SupplierKeys} from "./supplier-key/supplier-key.model";
         ConfigModule.forRoot({
             envFilePath: `.${process.env.NODE_ENV}.env`
         }),
+
         SequelizeModule.forRoot({
             dialect: 'postgres',
             host: process.env.POSTGRES_HOST,
@@ -32,7 +37,7 @@ import {SupplierKeys} from "./supplier-key/supplier-key.model";
             username:  process.env.POSTGRES_USER,
             password:  String(process.env.POSTGRES_PASSWORD),
             database:  process.env.POSTGRES_DB,
-            models: [Stocks, Orders, Sales, FinancialReport, SupplierKeys],
+            models: [Stocks, Orders, Sales, FinancialReport, SupplierKeys, User, Role, UserRoles],
             autoLoadModels: true,
             retry: {
                 match: [/Deadlock/i, TimeoutError], // Retry on connection errors
@@ -40,10 +45,20 @@ import {SupplierKeys} from "./supplier-key/supplier-key.model";
                 backoffBase: 3000, // Initial backoff duration in ms. Default: 100,
                 backoffExponent: 1.5,
             }
-    }), StocksModule, OrdersModule, SalesModule, ReportDetailByPeriodModule, TaskScheduleModule,
+        }),
+
+        StocksModule,
+        OrdersModule,
+        SalesModule,
+        ReportDetailByPeriodModule,
+        TaskScheduleModule,
         ScheduleModule.forRoot(),
-        SupplierKeyModule
-    ]
+        SupplierKeyModule,
+        AuthModule,
+        UserModule,
+        RolesModule,
+
+    ],
 
 })
 
