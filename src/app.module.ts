@@ -21,6 +21,10 @@ import {SupplierKeyModule} from "./modules/supplier-key/supplier-key.module";
 import {AuthModule} from "./modules/auth/auth.module";
 import {UserModule} from "./modules/user/user.module";
 import {RolesModule} from "./modules/roles/roles.module";
+import {JwtService} from "@nestjs/jwt";
+import {APP_GUARD} from "@nestjs/core";
+import {RolesGuard} from "./guards/roles.guard";
+import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 
 @Module({
     controllers : [],
@@ -57,7 +61,6 @@ import {RolesModule} from "./modules/roles/roles.module";
         AuthModule,
         UserModule,
         RolesModule,
-
     ],
 
 })

@@ -174,6 +174,7 @@ export class Sales extends Model<Sales, SalesCreationAttrs> {
 
     @Column({
         type: DataType.STRING,
+        unique: true
     })
     srid: string;
 
@@ -181,5 +182,4 @@ export class Sales extends Model<Sales, SalesCreationAttrs> {
         type: DataType.STRING,
     })
     supplierName: string;
-
 }

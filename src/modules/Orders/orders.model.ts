@@ -115,7 +115,7 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.STRING})
     gNumber: string;
 
-    @Column({type: DataType.STRING})
+    @Column({type: DataType.STRING, unique: true})
     srid: string;
 
     @Column({type: DataType.STRING})

@@ -12,30 +12,43 @@ export class ReportDetailByPeriodService {
         @InjectModel(SupplierKeys) private supplierKeysRepository: typeof SupplierKeys
     ) {}
 
-    async updateFinancialReport(test: boolean = false) {
+    async updateFinancialReport(test: boolean = true) {
         try {
             if (test) {
 
             } else {
                 const suppliers = await this.supplierKeysRepository.findAll()
-                for (const supplier of suppliers) {
-                    await this.financialReportRepository.sync({alter: true})
-                    const financialReportData = await getFinancialReportWB(await setFilterDate(this.financialReportRepository), setDateTo(), supplier?.apiKey)
-                    console.log(await getFinancialReportWB(await setFilterDate(this.financialReportRepository), setDateTo(), supplier?.apiKey))
 
-                    financialReportData.forEach((item, index) => {
-                        item['supplierName'] = supplier?.supplierName;
-                        this.financialReportRepository.build(item).save().catch((err) => {
-                            console.error(err);
-                        })
-                        console.log(`Готово на: ${100 / financialReportData.length * index}%`)
-                    })
+                for (const supplier of suppliers) {
+
+                    let FRData
+                    let rrd_id = 0
+
+                    do {
+                        FRData = await getFinancialReportWB(await setFilterDate(this.financialReportRepository), setDateTo(), supplier?.apiKey, rrd_id)
+                        console.log(`количество говна: ${FRData.length}`)
+
+                        if (FRData) {
+                            FRData.forEach((item, index) => {
+                                item['supplierName'] = supplier?.supplierName;
+                                this.financialReportRepository.build(item).save().catch((err) => {
+                                    console.error(err);
+                                })
+                                console.log(`Готово на: ${Math.round(100 / FRData.length * index)}%`)
+                            })
+
+                            const lastItem = FRData[FRData.length - 1]
+                            rrd_id = lastItem?.rrd_id
+                        } else {
+                            console.log('говно не пришло')
+                        }
+                    } while (FRData.length > 0)
+                    console.log('financial report was injected')
                 }
             }
         } catch (e) {
             console.error(e);
         }
-
     }
 
     async getFinancialReport() {

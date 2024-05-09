@@ -1,13 +1,12 @@
 import axios from 'Axios';
-import * as process from "process";
 
-export const getFinancialReportWB = async (dateFrom: string, dateTo: string, apiKey: string, tryCount: number = 0) => {
+export const getFinancialReportWB = async (dateFrom: string, dateTo: string, apiKey: string, rrdid: number = 0, tryCount: number = 0) => {
     try {
         const url: string = "https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod";
         const params = {
             "dateFrom": `${dateFrom}`,
             "dateTo": `${dateTo}`,
-            "rrdid": 0
+            "rrdid": rrdid
         }
         const headers = {
             "Authorization": `${apiKey}`
@@ -21,7 +20,7 @@ export const getFinancialReportWB = async (dateFrom: string, dateTo: string, api
                     console.log(err?.message, "tryCount:  ", tryCount);
 
                     setTimeout(() => {
-                        getFinancialReportWB(dateFrom, dateTo, apiKey, tryCount)
+                        getFinancialReportWB(dateFrom, dateTo, apiKey, rrdid, tryCount)
                     }, 15000);
                 } else {
                     console.log(err?.message, "tryCount:  ", tryCount);

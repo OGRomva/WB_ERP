@@ -10,6 +10,7 @@ import {JwtService} from "@nestjs/jwt";
 import {Observable} from "rxjs";
 import {Reflector} from "@nestjs/core";
 import {ROLES_KEY} from "../decorators/roles-auth.decorator";
+import {getJwtSecret} from "../utils/jwt-constants";
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -39,8 +40,11 @@ export class RolesGuard implements CanActivate {
                 throw new UnauthorizedException({message: 'пользователь не авторизован'})
             }
 
-            req.user = this.jwtService.verify(token);
+            req.user = this.jwtService.verify(token, {
+                secret: getJwtSecret()
+            });
 
+            console.log(`user ${req.user} was authorized `)
             return req.user.roles.some(role => requiredRoles.includes(role.value));
         } catch (e) {
             console.log(e)
