@@ -24,7 +24,9 @@ export class OrdersService {
 
                     ordersData.forEach((item, index) => {
                         item['supplierName'] = supplier?.supplierName;
-                        this.ordersRepository.build(item).save();
+                        this.ordersRepository.build(item).save().catch(e => {
+                            console.log('This entity didn\'t saved (probably field \'srid\' is duplicated): \n', item)
+                        });
                         console.log(`Готово на: ${Math.round(100 / ordersData.length * index)}%`)
                     })
                 }

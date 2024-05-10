@@ -21,9 +21,12 @@ export class SalesService {
                 for (const supplier of suppliers) {
                     await this.salesRepository.sync({alter: true})
                     const salesData = await getSalesWB(supplier?.apiKey, await setFilterDate(this.salesRepository));
+
                     salesData.forEach((item, index) => {
                         item['supplierName'] = supplier?.supplierName;
-                        this.salesRepository.build(item).save();
+                        this.salesRepository.build(item).save().catch(e => {
+                            console.log('This entity didn\'t saved (probably field \'srid\' is duplicated): \n', item)
+                        });
                         console.log(`Готово на: ${Math.round(100 / salesData.length * index)}%`)
                     })
                 }

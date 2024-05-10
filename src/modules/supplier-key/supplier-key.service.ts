@@ -2,6 +2,9 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {SupplierKeys} from "./supplier-key.model";
 import {CreateSupplierKeyDto} from "./dto/supplier-key.dto";
+import * as dayjs from "dayjs";
+import {OldWBKeyError} from "../../exceptions/OldWBKeyError";
+import {Cron} from "@nestjs/schedule";
 
 @Injectable()
 export class SupplierKeyService {
@@ -36,5 +39,21 @@ export class SupplierKeyService {
         return this.supplierKeysRep.destroy({
             where: {id: id}
         });
+    }
+
+
+
+    @Cron('* 50 01 * * *')
+    async checkRelevanceOfKeys() {
+        const keys = await this.supplierKeysRep.findAll()
+        const todayDate = dayjs()
+        for (const key of keys) {
+            const checkDate = dayjs(key.tokenDeadDate)
+            console.log(checkDate.diff(todayDate, 'day'))
+
+            if (checkDate.diff(todayDate, 'day') < 1) {
+                throw new OldWBKeyError(key)
+            }
+        }
     }
 }

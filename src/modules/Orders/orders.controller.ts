@@ -1,6 +1,10 @@
-import {Controller, Get, Post} from '@nestjs/common';
+import {Controller, Get, Post, UseGuards} from '@nestjs/common';
 import {OrdersService} from "./orders.service";
+import {Roles} from "../../decorators/roles-auth.decorator";
+import {RolesGuard} from "../../guards/roles.guard";
 
+@Roles('SUPPLIER', 'ADMIN')
+@UseGuards(RolesGuard)
 @Controller('orders')
 export class OrdersController {
     constructor(private orderService: OrdersService) {}

@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import {UserModule} from "../user/user.module";
 import {JwtModule} from "@nestjs/jwt";
 import * as process from "process";
+import {getJwtSecret} from "../../utils/jwt-constants";
 
 @Module({
     controllers: [AuthController],
@@ -11,7 +12,8 @@ import * as process from "process";
     imports: [
         forwardRef(() => UserModule),
         JwtModule.register({
-            secret: process.env.PRIVATE_KEY || 'SECRET',
+            global: true,
+            secret: getJwtSecret() || 'SECRET',
             signOptions: {
               expiresIn: '8h'
             }

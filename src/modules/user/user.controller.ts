@@ -1,8 +1,12 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {UserService} from "./user.service";
 import {UserCreationDto} from "./dto/userCreation.dto";
 import {AddRoleDto} from "./dto/add-role.dto";
+import {Roles} from "../../decorators/roles-auth.decorator";
+import {RolesGuard} from "../../guards/roles.guard";
 
+@Roles('ADMIN')
+@UseGuards(RolesGuard)
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) {}
@@ -24,7 +28,7 @@ export class UserController {
 
     @Delete('delete/:id')
     deleteUserById(@Param('id') id: number) {
-        this.userService.deleteUserById(id);
+        return this.userService.deleteUserById(id);
     }
 
     @Post('add-role')

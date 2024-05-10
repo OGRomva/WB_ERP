@@ -15,7 +15,7 @@ export class UserService {
     async createUser(dto: UserCreationDto) {
         await this.userRep.sync({alter: true})
         const user = await this.userRep.create(dto)
-        const role = await this.rolesService.getRoleByValue('SUPPLIER')
+        const role = await this.rolesService.getRoleByValue('ADMIN')
         await user.$set('roles', [role.id])
         user.roles = [role]
         return user;

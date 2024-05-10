@@ -5,8 +5,8 @@ import {JwtAuthGuard} from "../../guards/jwt-auth.guard";
 import {Roles} from "../../decorators/roles-auth.decorator";
 import {RolesGuard} from "../../guards/roles.guard";
 
-// @Roles("SUPPLIER")
-// @UseGuards(RolesGuard)
+@Roles("ADMIN", "SUPPLIER")
+@UseGuards(RolesGuard)
 @Controller('supplier-key')
 export class SupplierKeyController {
     constructor(private supplierKeyService: SupplierKeyService) {}
