@@ -1,4 +1,4 @@
-import axios from 'Axios';
+import axios from 'axios';
 
 export const getFinancialReportWB = async (dateFrom: string, dateTo: string, apiKey: string, rrdid: number = 0, tryCount: number = 0) => {
     try {
