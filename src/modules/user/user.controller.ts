@@ -28,7 +28,7 @@ export class UserController {
 
     @Delete('delete/:id')
     deleteUserById(@Param('id') id: number) {
-        this.userService.deleteUserById(id);
+        return this.userService.deleteUserById(id);
     }
 
     @Post('add-role')
