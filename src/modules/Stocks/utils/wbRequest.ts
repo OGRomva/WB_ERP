@@ -1,5 +1,4 @@
-import axios from 'Axios';
-import * as process from "process";
+import axios from 'axios';
 
 export const getStocksWB = async (authorizationKey: string, tryCount: number = 0) => {
     try {

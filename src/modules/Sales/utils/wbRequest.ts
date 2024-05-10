@@ -1,5 +1,4 @@
-import axios from 'Axios';
-
+import axios from 'axios';
 
 export const getSalesWB = async (supplierKey: string, filterDate: string, tryCount: number = 0, ) => {
     try {
