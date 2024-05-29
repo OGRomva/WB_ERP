@@ -1,39 +1,48 @@
-version: '4.29.0'
 
 services:
   main:
     container_name: main
+
     build:
       context: .
+      dockerfile: Dockerfile
+
     env_file:
-      - .development.env
+      - ./.production.env
+
     volumes:
       - .:/WB
       - /WB/node_modules
+
+    networks:
+      - bridge
+
     ports:
-      - 5000:5000
-      - 9229:9229
-    command: npm run start:dev
+      - 7000:7000
+
     depends_on:
       - postgres
+
     restart: always
 
   postgres:
     container_name: postgres
+
     image: postgres:16
+
     env_file:
-      - .development.env
+      - .production.env
 
     environment:
-      PG_DATA: /var/lib/postgresql/data
+      PG_DATA: C:\Program Files\PostgreSQL\16\data
+
+    networks:
+      - bridge
 
     ports:
-      - 5432:5432
+      - 5432:1234
 
     volumes:
-#      - pgdata: /private/var/lib/postgresql:/var/lib/postgresql
-#      - type: tmpfs
-#      - pgdata: C:\Program Files\PostgreSQL\16\data
       - /var/lib/postgresql/data
 
     restart: always
@@ -41,4 +50,7 @@ services:
 volumes:
   pgdata:
 
-
+networks:
+  bridge:
+    driver : "bridge"
+    external: true

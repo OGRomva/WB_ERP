@@ -44,7 +44,10 @@ export class RolesGuard implements CanActivate {
                 secret: getJwtSecret()
             });
 
-            console.log(`user ${req.user} was authorized `)
+            if (req.user.roles.some(role => requiredRoles.includes(role.value))) {
+                console.log(`user ${req.user} was authorized `)
+            }
+
             return req.user.roles.some(role => requiredRoles.includes(role.value));
         } catch (e) {
             console.log(e)

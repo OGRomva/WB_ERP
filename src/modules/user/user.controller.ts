@@ -31,8 +31,8 @@ export class UserController {
         return this.userService.deleteUserById(id);
     }
 
-    @Post('add-role')
-    addRole(@Body() dto: AddRoleDto) {
-        return this.userService.addRole(dto);
+    @Post('setRole/:id/:role')
+    setRole(@Param('id') userId: number, @Param('role') userRole: string) {
+        return this.userService.setRole(userId, userRole);
     }
 }

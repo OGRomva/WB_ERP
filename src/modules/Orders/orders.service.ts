@@ -4,6 +4,7 @@ import {Orders} from "./orders.model";
 import {setFilterDate} from "./utils/filter";
 import {SupplierKeys} from "../supplier-key/supplier-key.model";
 import {getOrdersWB} from "./utils/wbRequest";
+import {getQuery} from "./utils/testQuery";
 
 @Injectable()
 export class OrdersService {
@@ -14,13 +15,14 @@ export class OrdersService {
 
     async updateOrders(test: boolean = false) {
         if (test) {
-            console.log("orders updated")
+            await getQuery()
         } else {
             try {
                 const suppliers = await this.supplierKeysRepository.findAll();
                 for (const supplier of suppliers) {
                     await this.ordersRepository.sync({alter: true})
-                    const ordersData = await getOrdersWB(supplier?.apiKey, await setFilterDate(this.ordersRepository));
+
+                    const ordersData = await getOrdersWB(supplier?.apiKey, await setFilterDate(this.ordersRepository))
 
                     ordersData.forEach((item, index) => {
                         item['supplierName'] = supplier?.supplierName;
@@ -29,6 +31,8 @@ export class OrdersService {
                         });
                         console.log(`Готово на: ${Math.round(100 / ordersData.length * index)}%`)
                     })
+
+                    console.log("Orders was updated")
                 }
 
             } catch (e) {

@@ -1,8 +1,8 @@
 import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 interface OrdersCreationAttrs {
-    date: string;
-    lastChangeDate: string;
+    date: Date;
+    lastChangeDate: Date;
     warehouseName: string;
     countryName: string;
     oblastOkrugName: string;
@@ -37,10 +37,10 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @Column({type: DataType.STRING})
+    @Column({type: DataType.DATE})
     date: string;
 
-    @Column({type: DataType.STRING})
+    @Column({type: DataType.DATE})
     lastChangeDate: string;
 
     @Column({type: DataType.STRING})

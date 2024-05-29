@@ -3,8 +3,8 @@ import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 interface FinancialReportCreationAttrs {
     realizationreport_id:number;
-    date_from: string;
-    date_to: string;
+    date_from: Date;
+    date_to: Date;
     create_dt: string;
     currency_name: string;
     rrd_id: number;
@@ -76,11 +76,11 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.BIGINT})
     realizationreport_id: number;
 
-    @Column({type: DataType.STRING})
-    date_from: string;
+    @Column({type: DataType.DATE})
+    date_from: Date;
 
-    @Column({type: DataType.STRING})
-    date_to: string;
+    @Column({type: DataType.DATE})
+    date_to: Date;
 
     @Column({type: DataType.STRING})
     create_dt: string;

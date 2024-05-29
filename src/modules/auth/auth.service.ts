@@ -43,6 +43,7 @@ export class AuthService {
         const user = await this.userService.getUserByEmail(dto.email);
         const passwordEquals = (dto.password === user.password);
 
+
         if (user && passwordEquals) {
             return user;
         }

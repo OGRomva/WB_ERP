@@ -1,6 +1,7 @@
 import axios from 'axios';
+import axiosRetry from "axios-retry";
 
-export const getStocksWB = async (authorizationKey: string, tryCount: number = 0) => {
+export const getStocksWB = async (authorizationKey: string) => {
     try {
         const url: string = "https://statistics-api.wildberries.ru/api/v1/supplier/stocks";
         const params = {
@@ -10,21 +11,25 @@ export const getStocksWB = async (authorizationKey: string, tryCount: number = 0
             "Authorization": `${authorizationKey}`
         }
 
-        let data = undefined;
-        data = await axios.get(url, {params, headers})
-            .catch((err) => {
-                if (tryCount !== 5) {
-                    tryCount++;
-                    console.log(err?.message, "tryCount:  ", tryCount);
+        axiosRetry(axios, {
+            retries: 5
+        })
 
-                    setTimeout(() => {
-                        getStocksWB(authorizationKey, tryCount)
-                    }, 15000);
-                } else {
-                    console.log(err?.message, "tryCount:  ", tryCount);
-                    //уведомление о провале загрузки
-                }
-            });
+        let data = undefined;
+        data = await axios.get(url, {params: params, headers: headers, timeout: 30000})
+            // .catch((err) => {
+            //     if (tryCount !== 5) {
+            //         tryCount++;
+            //         console.log(err?.message, "tryCount:  ", tryCount);
+            //
+            //         setTimeout(() => {
+            //             getStocksWB(authorizationKey, tryCount)
+            //         }, 15000);
+            //     } else {
+            //         console.log(err?.message, "tryCount:  ", tryCount);
+            //         //уведомление о провале загрузки
+            //     }
+            // });
 
         return data?.data;
     } catch (e) {

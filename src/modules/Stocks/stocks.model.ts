@@ -1,7 +1,7 @@
 import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 interface StockCreationAttrs {
-    lastChangeDate: string;
+    lastChangeDate: Date;
     supplierArticle: string;
     nmId: number;
     barcode: string;
@@ -16,20 +16,20 @@ interface StockCreationAttrs {
     quantityFull: number;
     Price: number;
     Discount: number;
-    dateUpload:string;
+    dateUpload: Date;
     supplierName: string;
     isSupply: boolean;
     isRealization: boolean;
     SCCode: string;
 }
 
-@Table({tableName: 'stocks', timestamps:false})
+@Table({tableName: 'stocks', timestamps: false})
 export class Stocks extends Model<Stocks, StockCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @Column({type: DataType.STRING})
-    lastChangeDate: string;
+    @Column({type: DataType.DATE})
+    lastChangeDate: Date;
 
     @Column({type: DataType.STRING})
     supplierArticle: string;
@@ -73,8 +73,8 @@ export class Stocks extends Model<Stocks, StockCreationAttrs> {
     @Column({type: DataType.INTEGER})
     Discount: number;
 
-    @Column({type: DataType.STRING})
-    dateUpload: string;
+    @Column({type: DataType.DATE})
+    dateUpload: Date;
 
     @Column({type: DataType.STRING})
     supplierName: string;

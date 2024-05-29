@@ -1,8 +1,8 @@
 import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 interface SalesCreationAttrs {
-    date: string;
-    lastChangeDate: string;
+    date: Date;
+    lastChangeDate: Date;
     warehouseName: string;
     countryName: string;
     oblastOkrugName: string;
@@ -38,14 +38,14 @@ export class Sales extends Model<Sales, SalesCreationAttrs> {
     id: number;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.DATE,
     })
-    date: string;
+    date: Date;
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.DATE,
     })
-    lastChangeDate: string;
+    lastChangeDate: Date;
 
     @Column({
         type: DataType.STRING,
