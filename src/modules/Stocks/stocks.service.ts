@@ -1,4 +1,4 @@
-import {HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Stocks} from "./stocks.model";
 import {getStocksWB} from './utils/wbRequest';
@@ -15,43 +15,46 @@ export class StocksService {
         @InjectModel(Supplier) private supplierRep: typeof Supplier
     ) {}
 
-    async updateStocks(test: boolean = true) {
+    async updateStocks(test: boolean = false) {
         if (test) {
-            await this.stocksRepository.sync({alter: true})
-            const suppliers = await this.supplierRep.findAll({
-                include: [{
-                    model: SupplierKeys,
+
+        } else {
+            try {
+                await this.stocksRepository.sync({alter: true})
+                const suppliers = await this.supplierRep.findAll({
                     include: [{
-                        model: KeyCategories,
-                        where: {
-                            value: 'Статистика',
-                        }
+                        model: SupplierKeys,
+                        include: [{
+                            model: KeyCategories,
+                            where: {
+                                value: 'Статистика',
+                            }
+                        }]
                     }]
-                }]
-            })
+                })
 
-            for (const supplier of suppliers) {
-                if (supplier.keys.length) {
-                    for (const key of supplier.keys) {
-                        const data = await getStocksWB(key.apiKey);
+                for (const supplier of suppliers) {
+                    if (supplier.keys.length) {
+                        for (const key of supplier.keys) {
+                            const data = await getStocksWB(key.apiKey);
 
-                        for (const item of data) {
-                            item['supplierId'] = supplier.id
-                            item['dateUpload'] = dayjs().format('YYYY-MM-DD HH:mm:ss')
+                            for (const item of data) {
+                                item['supplierId'] = supplier.id
+                                item['dateUpload'] = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
-                            await this.stocksRepository.create(item)
+                                await this.stocksRepository.create(item)
+                            }
                         }
                     }
                 }
+
+                return {
+                    statusCode: HttpStatus.CREATED,
+                    message: 'Stocks was successfully updated',
+                }
+            } catch (e) {
+                throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR)
             }
-
-            return {
-                statusCode: HttpStatus.CREATED,
-                message: 'Stocks was successfully updated',
-            }
-
-        } else {
-
         }
 
     }

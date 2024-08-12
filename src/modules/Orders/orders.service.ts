@@ -15,7 +15,7 @@ export class OrdersService {
         @InjectModel(Supplier) private supplierRep: typeof Supplier
     ) {}
 
-    async updateOrders(test: boolean = true) {
+    async updateOrders(test: boolean = false) {
         if (test) {
 
         } else {

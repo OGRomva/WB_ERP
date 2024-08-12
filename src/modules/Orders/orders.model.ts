@@ -24,7 +24,7 @@ interface OrdersCreationAttrs {
     finishedPrice: number;
     priceWithDisc: number;
     isCancel: boolean;
-    cancelDate: string;
+    cancelDate: Date;
     orderType: string;
     sticker: string;
     gNumber: string;
@@ -104,8 +104,8 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.BOOLEAN})
     isCancel: boolean;
 
-    @Column({type: DataType.STRING})
-    cancelDate: string;
+    @Column({type: DataType.DATE})
+    cancelDate: Date;
 
     @Column({type: DataType.STRING})
     orderType: string;
