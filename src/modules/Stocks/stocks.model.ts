@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Supplier} from "../suppliers/suppliers.model";
 
 interface StockCreationAttrs {
     lastChangeDate: Date;
@@ -21,6 +22,7 @@ interface StockCreationAttrs {
     isSupply: boolean;
     isRealization: boolean;
     SCCode: string;
+    supplierId: number;
 }
 
 @Table({tableName: 'stocks', timestamps: false})
@@ -87,4 +89,11 @@ export class Stocks extends Model<Stocks, StockCreationAttrs> {
 
     @Column({type: DataType.STRING})
     SCCode: string;
+
+    @ForeignKey(() => Supplier)
+    @Column({type: DataType.INTEGER})
+    supplierId: number;
+
+    @BelongsTo(() => Supplier)
+    supplier: Supplier;
 }

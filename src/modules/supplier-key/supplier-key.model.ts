@@ -1,10 +1,12 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Supplier} from "../suppliers/suppliers.model";
+import {KeyCategories} from "../key-categories/key-categories.model";
+import {KeyToCategories} from "./KeyToCategories.model";
 
 interface SupplierKeyModelCreationAttrs {
-    supplierName: string;
+    supplierId: number;
     apiKey:string;
     tokenDeadDate: string;
-    description: string;
 }
 
 @Table({tableName: 'supplierKeys'})
@@ -12,8 +14,9 @@ export class SupplierKeys extends Model<SupplierKeys, SupplierKeyModelCreationAt
     @Column({type: DataType.INTEGER, primaryKey: true, autoIncrement: true, unique: true, allowNull: false})
     id: number;
 
-    @Column({type: DataType.STRING})
-    supplierName: string;
+    @ForeignKey(() => Supplier)
+    @Column({type: DataType.INTEGER, allowNull: false})
+    supplierId: number;
 
     @Column({type: DataType.TEXT})
     apiKey: string;
@@ -21,6 +24,6 @@ export class SupplierKeys extends Model<SupplierKeys, SupplierKeyModelCreationAt
     @Column({type: DataType.STRING})
     tokenDeadDate: string;
 
-    @Column({type: DataType.STRING})
-    description: string;
+    @BelongsToMany(() => KeyCategories, () => KeyToCategories)
+    categories: KeyCategories[]
 }

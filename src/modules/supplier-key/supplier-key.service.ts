@@ -5,14 +5,28 @@ import {CreateSupplierKeyDto} from "./dto/supplier-key.dto";
 import * as dayjs from "dayjs";
 import {OldWBKeyError} from "../../exceptions/OldWBKeyError";
 import {Cron} from "@nestjs/schedule";
+    import {KeyCategories} from "../key-categories/key-categories.model";
+import {isNumber} from "@nestjs/common/utils/shared.utils";
 
 @Injectable()
 export class SupplierKeyService {
-    constructor(@InjectModel(SupplierKeys) private supplierKeysRep: typeof SupplierKeys) {}
+    constructor(
+        @InjectModel(SupplierKeys) private supplierKeysRep: typeof SupplierKeys,
+        @InjectModel(KeyCategories) private keyCategoriesRep: typeof KeyCategories
+    ) {}
 
     async createKey(dto: CreateSupplierKeyDto) {
-        await  this.supplierKeysRep.sync({alter: true})
-        return await this.supplierKeysRep.create(dto);
+        await this.supplierKeysRep.sync({alter: true})
+        const key = await this.supplierKeysRep.create(dto);
+        let categories: KeyCategories[]
+        for (const item of dto.categories) {
+            const cat = await this.keyCategoriesRep.findByPk(item);
+            await key.$set('categories', [cat.id]);
+            categories?.push(cat);
+        }
+
+        key.categories = categories;
+        return key
     }
 
     async updateKey(dto: CreateSupplierKeyDto, id: number) {
@@ -27,12 +41,12 @@ export class SupplierKeyService {
         return await this.supplierKeysRep.findOne({where: {id: id}});
     }
 
-    async getKeyByName(brandName: string) {
-        return this.supplierKeysRep.findOne({where: {supplierName: brandName}});
-    }
-
     async getAllKeys() {
-        return this.supplierKeysRep.findAll();
+        return this.supplierKeysRep.findAll({
+            include: {
+                all: true
+            }
+        });
     }
 
     async deleteKeyByName(id: number) {
@@ -40,8 +54,6 @@ export class SupplierKeyService {
             where: {id: id}
         });
     }
-
-
 
     @Cron('* 50 01 * * *')
     async checkRelevanceOfKeys() {

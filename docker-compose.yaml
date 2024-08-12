@@ -15,7 +15,7 @@ services:
       - /WB/node_modules
 
     networks:
-      - bridge
+      - my_net
 
     ports:
       - 7000:7000
@@ -37,10 +37,10 @@ services:
       PG_DATA: C:\Program Files\PostgreSQL\16\data
 
     networks:
-      - bridge
+      - my_net
 
     ports:
-      - 5432:1234
+      - 1234:1234
 
     volumes:
       - /var/lib/postgresql/data
@@ -51,6 +51,7 @@ volumes:
   pgdata:
 
 networks:
-  bridge:
+  my_net:
     driver : "bridge"
-    external: true
+    driver_opts:
+      com.docker.network.driver.mtu: 1450

@@ -3,16 +3,13 @@ import { StocksController } from './stocks.controller';
 import { StocksService } from './stocks.service';
 import {SequelizeModule} from "@nestjs/sequelize";
 import {Stocks} from "./stocks.model";
-import {SupplierKeyService} from "../supplier-key/supplier-key.service";
-import {SupplierKeys} from "../supplier-key/supplier-key.model";
-import {RolesGuard} from "../../guards/roles.guard";
-import {JwtModule, JwtService} from "@nestjs/jwt";
+import {Supplier} from "../suppliers/suppliers.model";
 
 @Module({
   controllers: [StocksController],
-  providers: [StocksService, SupplierKeyService, JwtService],
+  providers: [StocksService],
   imports: [
-      SequelizeModule.forFeature([Stocks, SupplierKeys])
+      SequelizeModule.forFeature([Stocks, Supplier])
   ],
   exports: [StocksService]
 })

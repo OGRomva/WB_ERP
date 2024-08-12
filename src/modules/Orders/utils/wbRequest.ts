@@ -23,36 +23,7 @@ export const getOrdersWB = async (apiKey: string, filterDate: string) => {
             headers: headers,
             httpAgent: http2
         })
-            // .catch((err) => {
-            //     if (tryCount !== 5) {
-            //         tryCount++;
-            //         console.log(err?.message, "tryCount:  ", tryCount);
-            //
-            //         setTimeout(async () => {
-            //             return getOrdersWB(apiKey, filterDate, tryCount)
-            //         }, 15000);
-            //     } else {
-            //         console.log(err?.message, "tryCount:  ", tryCount);
-            //         //уведомление о провале загрузки
-            //     }
-        // });
 
-
-        // let objects
-        //
-        // let response = await fetch(url + '?' + new URLSearchParams(params), {
-        //     headers: headers,
-        // }).then(async (data) => {
-        //     if (data.ok) {
-        //         objects = await data.json()
-        //         objects = JSON.parse(objects)
-        //     }
-        //
-        // }).catch((e) => {
-        //     console.log(e)
-        // })
-        //
-        // return objects;
 
         return data?.data
     } catch (e) {

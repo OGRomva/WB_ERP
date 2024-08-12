@@ -1,11 +1,12 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Supplier} from "../suppliers/suppliers.model";
 
 
 interface FinancialReportCreationAttrs {
     realizationreport_id:number;
     date_from: Date;
     date_to: Date;
-    create_dt: string;
+    create_dt: Date;
     currency_name: string;
     rrd_id: number;
     gi_id: number;
@@ -23,9 +24,9 @@ interface FinancialReportCreationAttrs {
     commission_percent: number;
     office_name: string;
     supplier_oper_name: string;
-    order_dt: string;
-    sale_dt: string;
-    rr_dt: string;
+    order_dt: Date;
+    sale_dt: Date;
+    rr_dt: Date;
     shk_id: number;
     retail_price_withdisc_rub: number;
     delivery_amount: number;
@@ -65,7 +66,7 @@ interface FinancialReportCreationAttrs {
     acceptance: number;
     srid: string;
     report_type: number;
-    supplierName: string;
+    supplierId: number;
 }
 
 @Table({ tableName: 'financialReport', timestamps: false })
@@ -82,8 +83,8 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.DATE})
     date_to: Date;
 
-    @Column({type: DataType.STRING})
-    create_dt: string;
+    @Column({type: DataType.DATE})
+    create_dt: Date;
 
     @Column({type: DataType.STRING})
     currency_name: string;
@@ -136,14 +137,14 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.STRING})
     supplier_oper_name: string;
 
-    @Column({type: DataType.STRING})
-    order_dt: string;
+    @Column({type: DataType.DATE})
+    order_dt: Date;
 
-    @Column({type: DataType.STRING})
-    sale_dt: string;
+    @Column({type: DataType.DATE})
+    sale_dt: Date;
 
-    @Column({type: DataType.STRING})
-    rr_dt: string;
+    @Column({type: DataType.DATE})
+    rr_dt: Date;
 
     @Column({type: DataType.BIGINT})
     shk_id: number;
@@ -211,8 +212,8 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.BIGINT})
     ppvz_office_id: number;
 
-    // @Column({type: DataType.STRING})
-    // ppvz_office_name: string;
+    @Column({type: DataType.STRING})
+    ppvz_office_name: string;
 
     @Column({type: DataType.BIGINT})
     ppvz_supplier_id: number;
@@ -226,8 +227,8 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.STRING})
     decloration_number: string;
 
-    // @Column({type: DataType.STRING})
-    // bonus_type_name: string;
+    @Column({type: DataType.STRING})
+    bonus_type_name: string;
 
     @Column({type: DataType.STRING})
     sticker_id: string;
@@ -265,6 +266,7 @@ export class FinancialReport extends Model<FinancialReport, FinancialReportCreat
     @Column({type: DataType.BIGINT})
     report_type: number;
 
-    @Column({type: DataType.STRING})
-    supplierName: string;
+    @ForeignKey(() => Supplier)
+    @Column({type: DataType.INTEGER})
+    supplierId: number;
 }

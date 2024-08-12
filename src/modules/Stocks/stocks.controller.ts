@@ -16,9 +16,8 @@ export class StocksController {
     update() {
         return this.stocksService.updateStocks()
     }
+
     @Get('get')
-    @UseGuards(RolesGuard)
-    @Roles('ADMIN')
     get(){
         return this.stocksService.getStocks()
     }

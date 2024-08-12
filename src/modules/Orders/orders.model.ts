@@ -1,4 +1,5 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Supplier} from "../suppliers/suppliers.model";
 
 interface OrdersCreationAttrs {
     date: Date;
@@ -28,7 +29,7 @@ interface OrdersCreationAttrs {
     sticker: string;
     gNumber: string;
     srid: string;
-    supplierName: string;
+    supplierId: number;
 }
 
 
@@ -118,6 +119,10 @@ export class Orders extends Model<Orders, OrdersCreationAttrs>{
     @Column({type: DataType.STRING, unique: true})
     srid: string;
 
-    @Column({type: DataType.STRING})
-    supplierName: string;
+    @ForeignKey(() => Supplier)
+    @Column({type: DataType.INTEGER})
+    supplierId: number;
+
+    @BelongsTo(() => Supplier)
+    supplier: Supplier
 }

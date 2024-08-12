@@ -3,14 +3,14 @@ import { ReportDetailByPeriodController } from './report-detail-by-period.contro
 import { ReportDetailByPeriodService } from './report-detail-by-period.service';
 import {SequelizeModule} from "@nestjs/sequelize";
 import {FinancialReport} from "./financialReport.model";
-import {SupplierKeys} from "../supplier-key/supplier-key.model";
 import {JwtModule} from "@nestjs/jwt";
+import {Supplier} from "../suppliers/suppliers.model";
 
 @Module({
   controllers: [ReportDetailByPeriodController],
   providers: [ReportDetailByPeriodService],
   imports: [
-      SequelizeModule.forFeature([FinancialReport, SupplierKeys]),
+      SequelizeModule.forFeature([FinancialReport, Supplier]),
       JwtModule
   ],
   exports: [ReportDetailByPeriodService]

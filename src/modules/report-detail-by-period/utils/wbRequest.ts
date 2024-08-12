@@ -3,7 +3,7 @@ import axiosRetry from "axios-retry";
 
 export const getFinancialReportWB = async (dateFrom: string, dateTo: string, apiKey: string, rrdid: number = 0) => {
     try {
-        const url: string = "https://statistics-api.wildberries.ru/api/v3/supplier/reportDetailByPeriod";
+        const url: string = "https://statistics-api.wildberries.ru/api/v5/supplier/reportDetailByPeriod";
         const params = {
             "dateFrom": `${dateFrom}`,
             "dateTo": `${dateTo}`,

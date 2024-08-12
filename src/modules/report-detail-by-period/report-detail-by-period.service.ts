@@ -1,53 +1,89 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {FinancialReport} from "./financialReport.model";
 import {getFinancialReportWB} from "./utils/wbRequest";
 import {setDateTo, setFilterDate} from "./utils/filter";
 import {SupplierKeys} from "../supplier-key/supplier-key.model";
+import {Supplier} from "../suppliers/suppliers.model";
+import {KeyCategories} from "../key-categories/key-categories.model";
+import * as dayjs from "dayjs";
+import {HttpStatusCode} from "axios";
 
 @Injectable()
 export class ReportDetailByPeriodService {
     constructor(
         @InjectModel(FinancialReport) private financialReportRepository: typeof FinancialReport,
-        @InjectModel(SupplierKeys) private supplierKeysRepository: typeof SupplierKeys
+        @InjectModel(Supplier) private supplierRep: typeof Supplier
     ) {}
 
-    async updateFinancialReport(test: boolean = true) {
-        try {
-            if (test) {
+    async updateFinancialReport(test: boolean = false) {
+        if (test) {
 
-            } else {
-                const suppliers = await this.supplierKeysRepository.findAll()
+        } else {
+            try {
+                await this.financialReportRepository.sync({alter: true})
+                const suppliers = await this.supplierRep.findAll({
+                    include: [{
+                        model: SupplierKeys,
+                        include: [{
+                            model: KeyCategories,
+                            where: {
+                                value: 'Статистика',
+                            }
+                        }]
+                    }]
+                })
 
                 for (const supplier of suppliers) {
+                    if (supplier.keys.length) {
 
-                    let FRData
-                    let rrd_id = 0
+                        for (const key of supplier.keys) {
+                            let data: FinancialReport[];
+                            let rrd_id = 0;
 
-                    do {
-                        FRData = await getFinancialReportWB(await setFilterDate(this.financialReportRepository), setDateTo(), supplier?.apiKey, rrd_id)
-                        console.log(`количество говна: ${FRData.length}`)
+                            do {
+                                const dateFrom = await setFilterDate(this.financialReportRepository, supplier.id);
+                                const date_to = setDateTo()
+                                data = await getFinancialReportWB(dateFrom, date_to, key.apiKey, rrd_id)
+                                console.log(data.length)
 
-                        if (FRData) {
-                            FRData.forEach((item, index) => {
-                                item['supplierName'] = supplier?.supplierName;
-                                this.financialReportRepository.build(item).save().catch((err) => {
-                                    console.error(err);
-                                })
-                                console.log(`Готово на: ${Math.round(100 / FRData.length * index)}%`)
-                            })
+                                if (data.length) {
+                                    for (const item of data) {
+                                        item.supplierId = supplier.id;
+                                    }
 
-                            const lastItem = FRData[FRData.length - 1]
-                            rrd_id = lastItem?.rrd_id
-                        } else {
-                            console.log('говно не пришло')
+
+                                    await this.financialReportRepository.bulkCreate(data)
+
+                                    rrd_id = data[data.length - 1].rrd_id
+                                } else {
+                                    if (rrd_id === 0) {
+                                        console.log({
+                                            time: dayjs().format('YYYY-MM-DD HH:mm:sss'),
+                                            message: 'Financial report wasn\'t injected. Check Wildberries API or date settings',
+                                            supplierId: supplier.id,
+                                            supplierName: supplier.supplierName,
+                                            date_from: dateFrom,
+                                            date_to: date_to
+                                        })
+                                    }
+
+                                }
+                            } while (data.length)
+
+                            break;
                         }
-                    } while (FRData.length > 0)
-                    console.log('financial report was injected')
+                    }
                 }
+
+                return {
+                    statusCode: HttpStatus.CREATED,
+                    message: 'Orders was successfully updated'
+                }
+
+            } catch (e) {
+                throw new HttpException(e, HttpStatusCode.InternalServerError)
             }
-        } catch (e) {
-            console.error(e);
         }
     }
 

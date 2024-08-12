@@ -46,10 +46,6 @@ export class UserService {
         })
     }
 
-    // async addRole(dto: AddRoleDto) {
-    //
-    // }
-
     async setRole(userId: number, userRole: string) {
         const user = await this.userRep.findByPk(userId);
         const role = await this.rolesService.getRoleByValue(userRole);

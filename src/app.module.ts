@@ -21,6 +21,11 @@ import {SupplierKeyModule} from "./modules/supplier-key/supplier-key.module";
 import {AuthModule} from "./modules/auth/auth.module";
 import {UserModule} from "./modules/user/user.module";
 import {RolesModule} from "./modules/roles/roles.module";
+import {Supplier} from "./modules/suppliers/suppliers.model";
+import {KeyCategories} from "./modules/key-categories/key-categories.model";
+import {KeyToCategories} from "./modules/supplier-key/KeyToCategories.model";
+import {KeyCategoriesModule} from "./modules/key-categories/key-categories.module";
+import {SuppliersModule} from "./modules/suppliers/suppliers.module";
 
 @Module({
     controllers : [],
@@ -37,8 +42,11 @@ import {RolesModule} from "./modules/roles/roles.module";
             username:  process.env.POSTGRES_USER,
             password:  String(process.env.POSTGRES_PASSWORD),
             database:  process.env.POSTGRES_DB,
-            models: [Stocks, Orders, Sales, FinancialReport, SupplierKeys, User, Role, UserRoles],
+            models: [Stocks, Orders, Sales, FinancialReport, SupplierKeys, User, Role, UserRoles, Supplier, KeyCategories, KeyToCategories],
+            timezone: '+03:00',
             autoLoadModels: true,
+            logging: false,
+
             retry: {
                 match: [/Deadlock/i, TimeoutError], // Retry on connection errors
                 max: 3, // Maximum retry 3 times
@@ -57,6 +65,8 @@ import {RolesModule} from "./modules/roles/roles.module";
         AuthModule,
         UserModule,
         RolesModule,
+        KeyCategoriesModule,
+        SuppliersModule
     ],
 
 })

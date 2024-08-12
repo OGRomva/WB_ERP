@@ -9,7 +9,7 @@ import {RolesGuard} from "../../guards/roles.guard";
 export class ReportDetailByPeriodController {
     constructor(private reportDetailByPeriodService: ReportDetailByPeriodService) {}
 
-    @Post()
+    @Post('update')
     update() {
         return this.reportDetailByPeriodService.updateFinancialReport();
     }

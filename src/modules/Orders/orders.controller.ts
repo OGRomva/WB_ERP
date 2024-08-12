@@ -1,4 +1,4 @@
-import {Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Controller, Get, Param, Post, UseGuards} from '@nestjs/common';
 import {OrdersService} from "./orders.service";
 import {Roles} from "../../decorators/roles-auth.decorator";
 import {RolesGuard} from "../../guards/roles.guard";
@@ -13,8 +13,16 @@ export class OrdersController {
         return this.orderService.updateOrders()
     }
 
-    @Get('get')
+    @Get('get-all')
     get() {
         return this.orderService.getOrders()
+    }
+
+    @Get('get-by-supplier-id/:id')
+    getBySupplierId(
+        @Param()
+        id: number
+    ) {
+        // return this.orderService.getBySupplierId();
     }
 }

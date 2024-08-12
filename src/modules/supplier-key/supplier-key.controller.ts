@@ -21,15 +21,9 @@ export class SupplierKeyController {
         return this.supplierKeyService.updateKey(creationKeyDto, id);
     }
 
-
     @Get('get-by-id/:id')
     async getKeyById(@Param('id') id: number) {
         return this.supplierKeyService.getKeyById(id);
-    }
-
-    @Get('get-by-name/:name')
-    async getKeyByName(@Param('name') name: string) {
-        return this.supplierKeyService.getKeyByName(name);
     }
 
     @Get('get-all')
@@ -41,4 +35,6 @@ export class SupplierKeyController {
     async deleteKeyByName(@Param('id') id: number) {
         return this.supplierKeyService.deleteKeyByName(id);
     }
+
+
 }
