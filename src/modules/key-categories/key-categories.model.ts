@@ -1,6 +1,4 @@
 import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
-import {User} from "../user/user.model";
-import {UserRoles} from "../roles/user-roles.model";
 import {KeyToCategories} from "../supplier-key/KeyToCategories.model";
 import {SupplierKeys} from "../supplier-key/supplier-key.model";
 

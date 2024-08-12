@@ -1,7 +1,6 @@
 import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {SupplierKeyService} from "./supplier-key.service";
 import {CreateSupplierKeyDto} from "./dto/supplier-key.dto";
-import {JwtAuthGuard} from "../../guards/jwt-auth.guard";
 import {Roles} from "../../decorators/roles-auth.decorator";
 import {RolesGuard} from "../../guards/roles.guard";
 

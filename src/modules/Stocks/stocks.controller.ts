@@ -1,7 +1,6 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Controller, Get, Post, UseGuards} from '@nestjs/common';
 import {StocksService} from "./stocks.service";
 import {Roles} from "../../decorators/roles-auth.decorator";
-import {JwtAuthGuard} from "../../guards/jwt-auth.guard";
 import {RolesGuard} from "../../guards/roles.guard";
 
 

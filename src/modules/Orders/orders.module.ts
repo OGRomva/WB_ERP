@@ -3,10 +3,8 @@ import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import {SequelizeModule} from "@nestjs/sequelize";
 import {Orders} from "./orders.model";
-import {SupplierKeys} from "../supplier-key/supplier-key.model";
 import {JwtModule} from "@nestjs/jwt";
 import {Supplier} from "../suppliers/suppliers.model";
-import {KeyCategories} from "../key-categories/key-categories.model";
 
 @Module({
   controllers: [OrdersController],

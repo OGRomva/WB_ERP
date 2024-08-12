@@ -5,8 +5,7 @@ import {CreateSupplierKeyDto} from "./dto/supplier-key.dto";
 import * as dayjs from "dayjs";
 import {OldWBKeyError} from "../../exceptions/OldWBKeyError";
 import {Cron} from "@nestjs/schedule";
-    import {KeyCategories} from "../key-categories/key-categories.model";
-import {isNumber} from "@nestjs/common/utils/shared.utils";
+import {KeyCategories} from "../key-categories/key-categories.model";
 
 @Injectable()
 export class SupplierKeyService {

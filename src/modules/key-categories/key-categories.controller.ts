@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
 import {KeyCategoriesService} from "./key-categories.service";
 import {CreateWBKeyCategoryDto} from "./dto/key-categories.dto";
 import {Roles} from "../../decorators/roles-auth.decorator";
